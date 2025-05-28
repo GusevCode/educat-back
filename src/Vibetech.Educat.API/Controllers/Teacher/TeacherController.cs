@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Vibetech.Educat.DataAccess;
 using Vibetech.Educat.DataAccess.Models;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace Vibetech.Educat.API.Controllers.Teacher;
 
@@ -574,5 +575,24 @@ public class TeacherController : ControllerBase
         }
         
         return Ok(mappedProfile);
+    }
+
+    /// <summary>
+    /// Обновляет статусы всех уроков на основе текущего времени
+    /// </summary>
+    /// <returns>Количество обновленных уроков</returns>
+    [HttpPost("lessons/update-status")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> UpdateAllLessonsStatus()
+    {
+        _logger.LogInformation("Вызов API для обновления статусов всех уроков");
+        
+        var updatedCount = await _teacherService.UpdateAllLessonsStatusAsync();
+        
+        return Ok(new { 
+            success = true, 
+            message = $"Обновлено {updatedCount} уроков", 
+            updatedCount 
+        });
     }
 } 

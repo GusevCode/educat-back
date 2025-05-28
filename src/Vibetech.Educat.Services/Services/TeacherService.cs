@@ -345,7 +345,7 @@ public class TeacherService : BaseService
             SubjectName = l.Subject.Name,
             StartTime = l.StartTime,
             EndTime = l.EndTime,
-            Status = GetActualLessonStatus(l),
+            Status = l.ActualStatusString,
             ConferenceLink = l.ConferenceLink ?? string.Empty,
             BoardLink = l.WhiteboardLink ?? string.Empty
         });
@@ -591,7 +591,7 @@ public class TeacherService : BaseService
             SubjectName = createdLesson.Subject.Name,
             StartTime = createdLesson.StartTime,
             EndTime = createdLesson.EndTime,
-            Status = createdLesson.Status.ToString(),
+            Status = createdLesson.ActualStatusString,
             ConferenceLink = createdLesson.ConferenceLink ?? string.Empty,
             BoardLink = createdLesson.WhiteboardLink ?? string.Empty
         });
@@ -708,7 +708,7 @@ public class TeacherService : BaseService
             SubjectName = lesson.Subject.Name,
             StartTime = lesson.StartTime,
             EndTime = lesson.EndTime,
-            Status = GetActualLessonStatus(lesson),
+            Status = lesson.ActualStatusString,
             ConferenceLink = lesson.ConferenceLink ?? string.Empty,
             BoardLink = lesson.WhiteboardLink ?? string.Empty
         };
@@ -762,5 +762,60 @@ public class TeacherService : BaseService
         
         _teacherLogger.LogInformation("Урок с ID={LessonId} успешно отменен", lessonId);
         return (true, "Урок успешно отменен");
+    }
+
+    /// <summary>
+    /// Обновляет статусы всех уроков для всех пользователей
+    /// </summary>
+    /// <returns>Количество обновленных уроков</returns>
+    public async Task<int> UpdateAllLessonsStatusAsync()
+    {
+        _teacherLogger.LogInformation("Ручное обновление статусов всех уроков");
+        
+        var now = DateTime.UtcNow;
+        
+        // Находим все запланированные уроки, которые уже должны быть завершены
+        var completedLessons = await _context.Lessons
+            .Where(l => l.Status == LessonStatus.Scheduled && l.EndTime < now)
+            .ToListAsync();
+            
+        // Находим все запланированные уроки, которые должны быть в процессе
+        var inProgressLessons = await _context.Lessons
+            .Where(l => l.Status == LessonStatus.Scheduled && l.StartTime <= now && l.EndTime > now)
+            .ToListAsync();
+            
+        int totalUpdated = 0;
+            
+        if (completedLessons.Any())
+        {
+            // Обновляем статусы на Completed
+            foreach (var lesson in completedLessons)
+            {
+                lesson.Status = LessonStatus.Completed;
+            }
+            
+            totalUpdated += completedLessons.Count;
+            _teacherLogger.LogInformation("Автоматически обновлены статусы {Count} уроков на Completed", completedLessons.Count);
+        }
+        
+        if (inProgressLessons.Any())
+        {
+            // Обновляем статусы на InProgress
+            foreach (var lesson in inProgressLessons)
+            {
+                lesson.Status = LessonStatus.InProgress;
+            }
+            
+            totalUpdated += inProgressLessons.Count;
+            _teacherLogger.LogInformation("Автоматически обновлены статусы {Count} уроков на InProgress", inProgressLessons.Count);
+        }
+        
+        // Сохраняем изменения, если они есть
+        if (totalUpdated > 0)
+        {
+            await _context.SaveChangesAsync();
+        }
+        
+        return totalUpdated;
     }
 } 

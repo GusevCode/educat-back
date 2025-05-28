@@ -125,6 +125,21 @@ Content-Type: application/json
 }
 ```
 
+### Обновление статусов всех уроков
+```http
+POST /api/teacher/lessons/update-status
+Authorization: Bearer {token}
+```
+
+Ответ:
+```json
+{
+  "success": true,
+  "message": "Обновлено 5 уроков",
+  "updatedCount": 5
+}
+```
+
 ### Получение уроков студента
 ```http
 GET /api/student/1/lessons?startDate=2025-06-01&endDate=2025-06-30

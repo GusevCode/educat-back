@@ -30,6 +30,38 @@ public class Lesson : BaseEntity
     
     public string? WhiteboardLink { get; set; }
     
+    /// <summary>
+    /// Актуальный статус урока с учетом текущего времени
+    /// </summary>
+    [NotMapped]
+    public LessonStatus ActualStatus
+    {
+        get
+        {
+            var currentTime = DateTime.UtcNow;
+            
+            // Если статус уже Completed или Cancelled, оставляем его
+            if (Status == LessonStatus.Completed || Status == LessonStatus.Cancelled)
+                return Status;
+            
+            // Если время окончания урока уже прошло, возвращаем Completed
+            if (EndTime < currentTime && Status == LessonStatus.Scheduled)
+                return LessonStatus.Completed;
+            
+            // Если текущее время между началом и окончанием урока, возвращаем InProgress
+            if (StartTime <= currentTime && EndTime > currentTime && Status == LessonStatus.Scheduled)
+                return LessonStatus.InProgress;
+            
+            return Status;
+        }
+    }
+    
+    /// <summary>
+    /// Актуальный статус урока в виде строки
+    /// </summary>
+    [NotMapped]
+    public string ActualStatusString => ActualStatus.ToString();
+    
     // Навигационные свойства
     public virtual User Teacher { get; set; } = null!;
     public virtual User Student { get; set; } = null!;

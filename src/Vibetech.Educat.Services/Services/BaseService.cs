@@ -51,6 +51,7 @@ namespace Vibetech.Educat.Services.Services
 
         /// <summary>
         /// Автоматически обновляет статус одного урока на "Completed", если время окончания урока уже прошло
+        /// или на "InProgress", если урок идет в данный момент
         /// </summary>
         /// <param name="lessonId">Идентификатор урока</param>
         /// <returns>Урок с обновленным статусом или null, если урок не найден</returns>
@@ -69,55 +70,82 @@ namespace Vibetech.Educat.Services.Services
             }
             
             var currentTime = DateTime.UtcNow;
+            bool updated = false;
+            
+            // Если время окончания урока уже прошло, меняем статус на Completed
             if (lesson.Status == LessonStatus.Scheduled && lesson.EndTime < currentTime)
             {
                 _logger.LogInformation("Автоматическое обновление статуса урока с ID={LessonId} на Completed, так как время окончания {EndTime} уже прошло", 
                     lessonId, lesson.EndTime);
                     
                 lesson.Status = LessonStatus.Completed;
+                updated = true;
+            }
+            // Если текущее время между началом и окончанием урока, меняем статус на InProgress
+            else if (lesson.Status == LessonStatus.Scheduled && lesson.StartTime <= currentTime && lesson.EndTime > currentTime)
+            {
+                _logger.LogInformation("Автоматическое обновление статуса урока с ID={LessonId} на InProgress, так как урок сейчас идет", 
+                    lessonId);
+                    
+                lesson.Status = LessonStatus.InProgress;
+                updated = true;
+            }
+            
+            if (updated)
+            {
                 await _context.SaveChangesAsync();
             }
             
             return lesson;
         }
 
-        protected string GetActualLessonStatus(Lesson lesson)
-        {
-            // Если статус уже Completed или Cancelled, оставляем его
-            if (lesson.Status == LessonStatus.Completed || lesson.Status == LessonStatus.Cancelled)
-                return lesson.Status.ToString();
-            
-            // Если время окончания урока уже прошло, возвращаем Completed
-            // Используем UTC время вместо локального
-            if (lesson.EndTime < DateTime.UtcNow && lesson.Status == LessonStatus.Scheduled)
-                return LessonStatus.Completed.ToString();
-            
-            return lesson.Status.ToString();
-        }
-        
         /// <summary>
         /// Обновляет статусы всех уроков в базе данных
         /// </summary>
         protected async Task UpdateAllLessonsStatusAsync()
         {
-            // Находим все запланированные уроки, которые уже должны быть завершены
             var now = DateTime.UtcNow;
-            var lessonsToUpdate = await _context.Lessons
+            
+            // Находим все запланированные уроки, которые уже должны быть завершены
+            var completedLessons = await _context.Lessons
                 .Where(l => l.Status == LessonStatus.Scheduled && l.EndTime < now)
                 .ToListAsync();
                 
-            if (lessonsToUpdate.Any())
+            // Находим все запланированные уроки, которые должны быть в процессе
+            var inProgressLessons = await _context.Lessons
+                .Where(l => l.Status == LessonStatus.Scheduled && l.StartTime <= now && l.EndTime > now)
+                .ToListAsync();
+                
+            bool hasChanges = false;
+                
+            if (completedLessons.Any())
             {
-                // Обновляем статусы
-                foreach (var lesson in lessonsToUpdate)
+                // Обновляем статусы на Completed
+                foreach (var lesson in completedLessons)
                 {
                     lesson.Status = LessonStatus.Completed;
                 }
                 
-                // Сохраняем изменения
-                await _context.SaveChangesAsync();
+                hasChanges = true;
+                _logger.LogInformation("Автоматически обновлены статусы {Count} уроков на Completed", completedLessons.Count);
+            }
+            
+            if (inProgressLessons.Any())
+            {
+                // Обновляем статусы на InProgress
+                foreach (var lesson in inProgressLessons)
+                {
+                    lesson.Status = LessonStatus.InProgress;
+                }
                 
-                _logger.LogInformation("Автоматически обновлены статусы {Count} уроков", lessonsToUpdate.Count);
+                hasChanges = true;
+                _logger.LogInformation("Автоматически обновлены статусы {Count} уроков на InProgress", inProgressLessons.Count);
+            }
+            
+            // Сохраняем изменения, если они есть
+            if (hasChanges)
+            {
+                await _context.SaveChangesAsync();
             }
         }
     }

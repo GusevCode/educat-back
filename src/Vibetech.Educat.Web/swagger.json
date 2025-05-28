@@ -840,7 +840,7 @@
             "schema": {
               "type": "string",
               "format": "date-time",
-              "example": "2025-05-28T16:21:59Z"
+              "example": "2025-05-28T22:02:37Z"
             }
           },
           {
@@ -850,7 +850,7 @@
             "schema": {
               "type": "string",
               "format": "date-time",
-              "example": "2025-05-28T16:21:59Z"
+              "example": "2025-05-28T22:02:37Z"
             }
           }
         ],
@@ -1618,7 +1618,7 @@
             "schema": {
               "type": "string",
               "format": "date-time",
-              "example": "2025-05-28T16:21:59Z"
+              "example": "2025-05-28T22:02:37Z"
             }
           },
           {
@@ -1628,7 +1628,7 @@
             "schema": {
               "type": "string",
               "format": "date-time",
-              "example": "2025-05-28T16:21:59Z"
+              "example": "2025-05-28T22:02:37Z"
             }
           }
         ],
@@ -2352,6 +2352,18 @@
           }
         }
       }
+    },
+    "/api/Teacher/lessons/update-status": {
+      "post": {
+        "tags": [
+          "Teacher"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2452,13 +2464,13 @@
             "type": "string",
             "description": "Время начала урока в формате ISO 8601 (например, 2023-05-25T14:30:00Z)",
             "format": "date-time",
-            "example": "2025-06-04T16:21:59Z"
+            "example": "2025-06-04T22:02:38Z"
           },
           "endTime": {
             "type": "string",
             "description": "Время окончания урока в формате ISO 8601 (например, 2023-05-25T16:00:00Z)",
             "format": "date-time",
-            "example": "2025-06-04T18:21:59Z"
+            "example": "2025-06-05T00:02:38Z"
           },
           "conferenceLink": {
             "type": "string",
@@ -2543,13 +2555,13 @@
             "type": "string",
             "description": "Время начала урока в формате ISO 8601 (например, 2023-05-25T14:30:00Z)",
             "format": "date-time",
-            "example": "2025-06-04T16:21:59Z"
+            "example": "2025-06-04T22:02:38Z"
           },
           "endTime": {
             "type": "string",
             "description": "Время окончания урока в формате ISO 8601 (например, 2023-05-25T16:00:00Z)",
             "format": "date-time",
-            "example": "2025-06-04T18:21:59Z"
+            "example": "2025-06-05T00:02:38Z"
           },
           "status": {
             "type": "string",

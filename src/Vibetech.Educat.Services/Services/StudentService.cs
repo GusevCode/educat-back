@@ -167,7 +167,7 @@ public class StudentService : BaseService
             SubjectName = l.Subject.Name,
             StartTime = DateTime.SpecifyKind(l.StartTime, DateTimeKind.Utc), // Явно указываем, что время в UTC
             EndTime = DateTime.SpecifyKind(l.EndTime, DateTimeKind.Utc),     // Явно указываем, что время в UTC
-            Status = GetActualLessonStatus(l),
+            Status = l.ActualStatusString,
             ConferenceLink = l.ConferenceLink ?? string.Empty,
             BoardLink = l.WhiteboardLink ?? string.Empty
         });
@@ -447,7 +447,7 @@ public class StudentService : BaseService
             SubjectName = lesson.Subject.Name,
             StartTime = lesson.StartTime, // Используем время как есть, без изменения Kind
             EndTime = lesson.EndTime,     // Используем время как есть, без изменения Kind
-            Status = GetActualLessonStatus(lesson),
+            Status = lesson.ActualStatusString,
             ConferenceLink = lesson.ConferenceLink ?? string.Empty,
             BoardLink = lesson.WhiteboardLink ?? string.Empty
         };
