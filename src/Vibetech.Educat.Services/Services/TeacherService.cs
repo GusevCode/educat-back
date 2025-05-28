@@ -318,14 +318,20 @@ public class TeacherService : BaseService
         if (startDate.HasValue)
         {
             _teacherLogger.LogInformation("Фильтрация по начальной дате: {StartDate}", startDate.Value);
-            query = query.Where(l => l.StartTime >= startDate.Value);
+            
+            // Предполагаем, что даты приходят в локальном времени, конвертируем их в UTC для правильного сравнения
+            DateTime startDateUtc = DateTime.SpecifyKind(startDate.Value, DateTimeKind.Utc);
+            query = query.Where(l => l.StartTime >= startDateUtc);
         }
         
         // Фильтрация по дате окончания
         if (endDate.HasValue)
         {
             _teacherLogger.LogInformation("Фильтрация по конечной дате: {EndDate}", endDate.Value);
-            query = query.Where(l => l.StartTime <= endDate.Value);
+            
+            // Предполагаем, что даты приходят в локальном времени, конвертируем их в UTC для правильного сравнения
+            DateTime endDateUtc = DateTime.SpecifyKind(endDate.Value, DateTimeKind.Utc);
+            query = query.Where(l => l.StartTime <= endDateUtc);
         }
         
         // Получаем уроки
@@ -333,6 +339,8 @@ public class TeacherService : BaseService
             .OrderBy(l => l.StartTime)
             .ToListAsync();
             
+        _teacherLogger.LogInformation("Найдено {Count} уроков для репетитора {TeacherId}", lessons.Count, teacherId);
+        
         // Формируем DTO
         return lessons.Select(l => new LessonDTO
         {
@@ -549,14 +557,18 @@ public class TeacherService : BaseService
         
         // Примечание: проверки на конфликт по времени удалены для возможности создания пересекающихся уроков
         
-        // Создаем новый урок с сохранением локального времени
+        // Предполагаем, что даты приходят в локальном времени, конвертируем их в UTC для хранения
+        DateTime startTimeUtc = DateTime.SpecifyKind(startTime, DateTimeKind.Utc);
+        DateTime endTimeUtc = DateTime.SpecifyKind(endTime, DateTimeKind.Utc);
+        
+        // Создаем новый урок с сохранением времени в UTC
         var lesson = new Lesson
         {
             TeacherId = teacherId,
             StudentId = studentId,
             SubjectId = subjectId,
-            StartTime = startTime,
-            EndTime = endTime,
+            StartTime = startTimeUtc,
+            EndTime = endTimeUtc,
             Status = LessonStatus.Scheduled,
             ConferenceLink = conferenceLink,
             WhiteboardLink = boardLink

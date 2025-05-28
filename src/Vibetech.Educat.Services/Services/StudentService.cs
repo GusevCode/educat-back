@@ -136,13 +136,17 @@ public class StudentService : BaseService
         if (startDate.HasValue)
         {
             _studentLogger.LogInformation("Фильтрация по начальной дате: {StartDate}", startDate.Value);
-            query = query.Where(l => l.StartTime >= startDate.Value);
+            // Предполагаем, что даты приходят в локальном времени, конвертируем их в UTC для правильного сравнения
+            DateTime startDateUtc = DateTime.SpecifyKind(startDate.Value, DateTimeKind.Utc);
+            query = query.Where(l => l.StartTime >= startDateUtc);
         }
 
         if (endDate.HasValue)
         {
             _studentLogger.LogInformation("Фильтрация по конечной дате: {EndDate}", endDate.Value);
-            query = query.Where(l => l.StartTime <= endDate.Value);
+            // Предполагаем, что даты приходят в локальном времени, конвертируем их в UTC для правильного сравнения
+            DateTime endDateUtc = DateTime.SpecifyKind(endDate.Value, DateTimeKind.Utc);
+            query = query.Where(l => l.StartTime <= endDateUtc);
         }
         
         var lessons = await query.ToListAsync();
@@ -155,7 +159,7 @@ public class StudentService : BaseService
         // Сортируем по времени начала
         lessons = lessons.OrderBy(l => l.StartTime).ToList();
         
-        // Обязательно сохраняем время в DateTime, возвращаем полную дату и время
+        // Возвращаем данные с явным указанием формата времени
         return lessons.Select(l => new LessonDTO
         {
             Id = l.Id,
@@ -165,8 +169,8 @@ public class StudentService : BaseService
             TeacherName = $"{l.Teacher.LastName} {l.Teacher.FirstName}".Trim(),
             StudentName = $"{l.Student.LastName} {l.Student.FirstName}".Trim(),
             SubjectName = l.Subject.Name,
-            StartTime = DateTime.SpecifyKind(l.StartTime, DateTimeKind.Utc), // Явно указываем, что время в UTC
-            EndTime = DateTime.SpecifyKind(l.EndTime, DateTimeKind.Utc),     // Явно указываем, что время в UTC
+            StartTime = l.StartTime, // Не меняем формат времени
+            EndTime = l.EndTime,     // Не меняем формат времени
             Status = l.ActualStatusString,
             ConferenceLink = l.ConferenceLink ?? string.Empty,
             BoardLink = l.WhiteboardLink ?? string.Empty

@@ -40,18 +40,7 @@ public class ApiMappingProfile : Profile
             .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime))
             .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime))
             .ForMember(dest => dest.WhiteboardLink, opt => opt.MapFrom(src => src.BoardLink))
-            .ForMember(dest => dest.Status, opt => opt.MapFrom((src, dest, member, context) => 
-            {
-                // Если статус уже Completed или Cancelled, оставляем его
-                if (src.Status == "Completed" || src.Status == "Cancelled")
-                    return src.Status;
-                    
-                // Если время окончания урока уже прошло, возвращаем Completed
-                if (src.EndTime < DateTime.UtcNow && src.Status == "Scheduled")
-                    return "Completed";
-                    
-                return src.Status;
-            }));
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
         
         // Маппинг для StudentRequest
         CreateMap<StudentRequestDTO, StudentRequestDto>();
