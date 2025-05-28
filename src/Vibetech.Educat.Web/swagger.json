@@ -1,0 +1,3258 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Vibetech Educat API",
+    "description": "API для платформы репетиторов и студентов",
+    "contact": {
+      "name": "Vibetech",
+      "email": "support@vibetech.ru"
+    },
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Admin/update-all-ratings": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Обновление всех рейтингов",
+        "description": "Обновляет рейтинги всех репетиторов на основе отзывов",
+        "responses": {
+          "200": {
+            "description": "Все рейтинги успешно обновлены"
+          }
+        }
+      }
+    },
+    "/api/Auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Авторизация пользователя",
+        "description": "Авторизует пользователя в системе и возвращает JWT-токен",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Пользователь успешно авторизован",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверные учетные данные"
+          }
+        }
+      }
+    },
+    "/api/Auth/register/student": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Регистрация студента",
+        "description": "Регистрирует нового студента в системе",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentRegisterRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentRegisterRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentRegisterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Студент успешно зарегистрирован",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка регистрации"
+          }
+        }
+      }
+    },
+    "/api/Auth/register/teacher": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Регистрация преподавателя",
+        "description": "Регистрирует нового преподавателя в системе. Поля SubjectIds и PreparationProgramIds не обязательны и могут быть добавлены позже.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeacherRegisterRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeacherRegisterRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeacherRegisterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Преподаватель успешно зарегистрирован",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка регистрации"
+          }
+        }
+      }
+    },
+    "/api/Dictionary/subjects": {
+      "get": {
+        "tags": [
+          "Dictionary"
+        ],
+        "summary": "Получение списка предметов",
+        "description": "Возвращает список всех доступных предметов",
+        "responses": {
+          "200": {
+            "description": "Список предметов",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubjectDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubjectDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubjectDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Dictionary"
+        ],
+        "summary": "Добавление предмета",
+        "description": "Добавляет новый предмет в систему",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddSubjectRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddSubjectRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddSubjectRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Предмет успешно добавлен",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Dictionary/preparation-programs": {
+      "get": {
+        "tags": [
+          "Dictionary"
+        ],
+        "summary": "Получение списка программ подготовки",
+        "description": "Возвращает список всех доступных программ подготовки",
+        "responses": {
+          "200": {
+            "description": "Список программ подготовки",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PreparationProgramDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PreparationProgramDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PreparationProgramDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Dictionary"
+        ],
+        "summary": "Добавление программы подготовки",
+        "description": "Добавляет новую программу подготовки в систему",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPreparationProgramRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPreparationProgramRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPreparationProgramRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Программа подготовки успешно добавлена",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreparationProgramDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreparationProgramDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreparationProgramDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Profile/teacher/{teacherId}": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Получение профиля преподавателя",
+        "description": "Возвращает данные профиля преподавателя по ID",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Профиль преподавателя",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherProfileDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherProfileDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherProfileDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Преподаватель не найден"
+          }
+        }
+      }
+    },
+    "/api/Profile/student/{studentId}": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Получение профиля студента",
+        "description": "Возвращает данные профиля студента по ID",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Профиль студента",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentProfileDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentProfileDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentProfileDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Студент не найден"
+          }
+        }
+      }
+    },
+    "/api/Review/teacher/{teacherId}": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "Получение отзывов репетитора",
+        "description": "Возвращает список отзывов, оставленных студентами для указанного репетитора",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список отзывов",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Review/lesson/{lessonId}": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "Получение отзывов об уроке",
+        "description": "Возвращает список отзывов, оставленных для указанного урока",
+        "parameters": [
+          {
+            "name": "lessonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список отзывов",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Review/student/{studentId}": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "Получение отзывов, оставленных студентом",
+        "description": "Возвращает список отзывов, оставленных указанным студентом",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список отзывов",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Review/create": {
+      "post": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "Создание отзыва",
+        "description": "Создает новый отзыв о репетиторе для указанного урока",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Отзыв успешно создан",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка при создании отзыва"
+          }
+        }
+      }
+    },
+    "/api/Student/profile/{studentId}": {
+      "get": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Получение профиля студента",
+        "description": "Возвращает данные профиля студента по ID",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Профиль студента",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentProfileDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentProfileDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentProfileDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Студент не найден"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Обновление профиля студента",
+        "description": "Обновляет данные профиля студента",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStudentProfileRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStudentProfileRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStudentProfileRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Профиль студента успешно обновлен",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentProfileDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentProfileDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentProfileDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Студент не найден"
+          }
+        }
+      }
+    },
+    "/api/Student/{studentId}/teachers": {
+      "get": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Получение репетиторов студента",
+        "description": "Возвращает список идентификаторов пользователей (UserId) репетиторов для указанного студента",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список идентификаторов пользователей репетиторов",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Student/{studentId}/lessons": {
+      "get": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Получение уроков студента",
+        "description": "Возвращает список уроков студента с возможностью фильтрации по датам",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Начальная дата фильтра (например, 2023-05-25T00:00:00)",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-05-28T16:21:59Z"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "Конечная дата фильтра (например, 2023-05-30T23:59:59)",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-05-28T16:21:59Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список уроков студента",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LessonDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LessonDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LessonDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Student/{studentId}/lessons/{lessonId}": {
+      "get": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Получение урока студента",
+        "description": "Возвращает данные одного урока студента по ID",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "lessonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Данные урока",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LessonDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LessonDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LessonDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Урок не найден"
+          }
+        }
+      }
+    },
+    "/api/Student/{studentId}/statistics": {
+      "get": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Получение статистики студента",
+        "description": "Возвращает статистическую информацию об уроках и репетиторах студента",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Статистика студента",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentStatisticsDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentStatisticsDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentStatisticsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Student/search-tutors": {
+      "get": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Поиск репетиторов",
+        "description": "Поиск репетиторов с различными фильтрами",
+        "parameters": [
+          {
+            "name": "subjectId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "minPrice",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "minExperience",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "minRating",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список репетиторов",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TeacherProfileDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TeacherProfileDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TeacherProfileDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Student/send-request/{teacherId}": {
+      "post": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Отправка заявки репетитору",
+        "description": "Отправляет заявку на обучение выбранному репетитору",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Заявка успешно отправлена"
+          },
+          "400": {
+            "description": "Ошибка при отправке заявки"
+          }
+        }
+      }
+    },
+    "/api/Student/lesson/{lessonId}/attachments": {
+      "get": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Получение вложений урока",
+        "description": "Возвращает список файлов, прикрепленных к уроку",
+        "parameters": [
+          {
+            "name": "lessonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список вложений",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Student/lesson/{lessonId}/upload-attachment": {
+      "post": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Загрузка файла к уроку",
+        "description": "Загружает новый файл и прикрепляет к указанному уроку",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "lessonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadAttachmentRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadAttachmentRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadAttachmentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Файл успешно загружен"
+          },
+          "400": {
+            "description": "Ошибка при загрузке файла"
+          }
+        }
+      }
+    },
+    "/api/Student/cancel-lesson/{studentId}/{lessonId}": {
+      "post": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Отмена урока",
+        "description": "Отменяет запланированный урок",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "lessonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Урок успешно отменен"
+          },
+          "400": {
+            "description": "Ошибка при отмене урока"
+          }
+        }
+      }
+    },
+    "/api/Student/force-complete-lesson/{studentId}/{lessonId}": {
+      "post": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Принудительное завершение урока",
+        "description": "Меняет статус урока на 'Completed' для тестирования отзывов",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "lessonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Статус урока успешно обновлен"
+          },
+          "400": {
+            "description": "Ошибка при обновлении статуса урока"
+          },
+          "404": {
+            "description": "Урок не найден"
+          }
+        }
+      }
+    },
+    "/api/Student/{studentId}/reviews": {
+      "get": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Получение отзывов, оставленных студентом",
+        "description": "Возвращает список отзывов, оставленных студентом о репетиторах",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список отзывов",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Student/review": {
+      "post": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Создание отзыва о репетиторе",
+        "description": "Создает новый отзыв студента о репетиторе для указанного урока",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Отзыв успешно создан",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка при создании отзыва"
+          }
+        }
+      }
+    },
+    "/api/Student/teacher-profile/{teacherId}": {
+      "get": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "Получение профиля преподавателя",
+        "description": "Возвращает данные профиля преподавателя по ID",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Профиль преподавателя",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherProfileDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherProfileDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherProfileDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Преподаватель не найден"
+          }
+        }
+      }
+    },
+    "/api/Teacher/profile/{teacherId}": {
+      "get": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Получение профиля репетитора",
+        "description": "Возвращает данные профиля репетитора по ID",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Профиль репетитора",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherProfileDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherProfileDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherProfileDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Репетитор не найден"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Обновление профиля репетитора",
+        "description": "Обновляет данные профиля репетитора",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTeacherProfileRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTeacherProfileRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTeacherProfileRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Профиль репетитора успешно обновлен",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherProfileDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherProfileDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherProfileDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Репетитор не найден"
+          }
+        }
+      }
+    },
+    "/api/Teacher/{teacherId}/students": {
+      "get": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Получение учеников репетитора",
+        "description": "Возвращает список идентификаторов пользователей (UserId) учеников для указанного репетитора",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список идентификаторов пользователей учеников",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Teacher/{teacherId}/lessons": {
+      "get": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Получение уроков репетитора",
+        "description": "Возвращает список уроков репетитора с возможностью фильтрации по датам",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Начальная дата фильтра (например, 2023-05-25T00:00:00)",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-05-28T16:21:59Z"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "Конечная дата фильтра (например, 2023-05-30T23:59:59)",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-05-28T16:21:59Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список уроков репетитора",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LessonDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LessonDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LessonDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Teacher/{teacherId}/lessons/{lessonId}": {
+      "get": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Получение урока репетитора",
+        "description": "Возвращает данные одного урока репетитора по ID",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "lessonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Данные урока",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LessonDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LessonDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LessonDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Урок не найден"
+          }
+        }
+      }
+    },
+    "/api/Teacher/{teacherId}/statistics": {
+      "get": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Получение статистики репетитора",
+        "description": "Возвращает статистическую информацию об уроках, рейтингах и учениках репетитора",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Статистика репетитора",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherStatisticsDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherStatisticsDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherStatisticsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Teacher/{teacherId}/requests": {
+      "get": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Получение заявок репетитора",
+        "description": "Возвращает список заявок на обучение от студентов",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список заявок",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudentRequestDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudentRequestDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudentRequestDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Teacher/accept-request/{requestId}": {
+      "post": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Принятие заявки от студента",
+        "description": "Принимает заявку на обучение от студента",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Заявка успешно принята"
+          },
+          "400": {
+            "description": "Ошибка при принятии заявки"
+          }
+        }
+      }
+    },
+    "/api/Teacher/reject-request/{requestId}": {
+      "post": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Отклонение заявки от студента",
+        "description": "Отклоняет заявку на обучение от студента",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Заявка успешно отклонена"
+          },
+          "400": {
+            "description": "Ошибка при отклонении заявки"
+          }
+        }
+      }
+    },
+    "/api/Teacher/remove-student/{teacherId}/{studentId}": {
+      "delete": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Удаление ученика",
+        "description": "Удаляет ученика у репетитора",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ученик успешно удален"
+          },
+          "400": {
+            "description": "Ошибка при удалении ученика"
+          }
+        }
+      }
+    },
+    "/api/Teacher/create-lesson": {
+      "post": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Создание урока",
+        "description": "Создает новый урок для студента. Поддерживается создание пересекающихся уроков",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLessonRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLessonRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLessonRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Урок успешно создан",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LessonDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LessonDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LessonDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка при создании урока"
+          }
+        }
+      }
+    },
+    "/api/Teacher/create-test-completed-lesson": {
+      "post": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Создание тестового завершенного урока",
+        "description": "Создает новый урок со статусом 'Completed' для тестирования отзывов",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLessonRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLessonRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLessonRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Тестовый урок успешно создан",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LessonDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LessonDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LessonDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка при создании тестового урока"
+          }
+        }
+      }
+    },
+    "/api/Teacher/cancel-lesson/{teacherId}/{lessonId}": {
+      "post": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Отмена урока",
+        "description": "Отменяет запланированный урок",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "lessonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Урок успешно отменен"
+          },
+          "400": {
+            "description": "Ошибка при отмене урока"
+          }
+        }
+      }
+    },
+    "/api/Teacher/update-lesson-status/{teacherId}/{lessonId}": {
+      "put": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Обновление статуса урока",
+        "description": "Обновляет статус урока вручную",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "lessonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/LessonStatus"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Статус урока успешно обновлен"
+          },
+          "400": {
+            "description": "Ошибка при обновлении статуса урока"
+          },
+          "404": {
+            "description": "Урок не найден"
+          }
+        }
+      }
+    },
+    "/api/Teacher/lesson/{lessonId}/attachments": {
+      "get": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Получение вложений урока",
+        "description": "Возвращает список файлов, прикрепленных к уроку",
+        "parameters": [
+          {
+            "name": "lessonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список вложений",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Teacher/lesson/{lessonId}/upload-attachment": {
+      "post": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Загрузка файла к уроку",
+        "description": "Загружает новый файл и прикрепляет к указанному уроку",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "lessonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadAttachmentRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadAttachmentRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadAttachmentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Файл успешно загружен"
+          },
+          "400": {
+            "description": "Ошибка при загрузке файла"
+          }
+        }
+      }
+    },
+    "/api/Teacher/{teacherId}/reviews": {
+      "get": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Получение отзывов репетитора",
+        "description": "Возвращает список отзывов, оставленных студентами о репетиторе",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список отзывов",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Teacher/{teacherId}/rating": {
+      "get": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Получение рейтинга репетитора",
+        "description": "Возвращает текущий рейтинг и количество отзывов о репетиторе",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Информация о рейтинге репетитора"
+          },
+          "404": {
+            "description": "Репетитор не найден"
+          }
+        }
+      }
+    },
+    "/api/Teacher/{teacherId}/update-rating": {
+      "post": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Обновление рейтинга репетитора",
+        "description": "Принудительно пересчитывает рейтинг репетитора на основе всех отзывов",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Рейтинг успешно обновлен"
+          },
+          "404": {
+            "description": "Репетитор не найден"
+          }
+        }
+      }
+    },
+    "/api/Teacher/student-profile/{studentId}": {
+      "get": {
+        "tags": [
+          "Teacher"
+        ],
+        "summary": "Получение профиля студента",
+        "description": "Возвращает данные профиля студента по ID",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Профиль студента",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentProfileDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentProfileDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentProfileDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Студент не найден"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddPreparationProgramRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddSubjectRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AttachmentDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileType": {
+            "type": "string",
+            "nullable": true
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "base64Content": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateLessonRequest": {
+        "required": [
+          "endTime",
+          "startTime",
+          "studentId",
+          "subjectId",
+          "teacherId"
+        ],
+        "type": "object",
+        "properties": {
+          "teacherId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "subjectId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startTime": {
+            "type": "string",
+            "description": "Время начала урока в формате ISO 8601 (например, 2023-05-25T14:30:00Z)",
+            "format": "date-time",
+            "example": "2025-06-04T16:21:59Z"
+          },
+          "endTime": {
+            "type": "string",
+            "description": "Время окончания урока в формате ISO 8601 (например, 2023-05-25T16:00:00Z)",
+            "format": "date-time",
+            "example": "2025-06-04T18:21:59Z"
+          },
+          "conferenceLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "whiteboardLink": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Запрос на создание урока. Поддерживается создание пересекающихся уроков"
+      },
+      "CreateReviewRequest": {
+        "required": [
+          "comment",
+          "lessonId",
+          "rating",
+          "studentId",
+          "teacherId"
+        ],
+        "type": "object",
+        "properties": {
+          "lessonId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "teacherId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rating": {
+            "maximum": 5,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "comment": {
+            "maxLength": 2000,
+            "minLength": 10,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LessonDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "teacherId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "teacherName": {
+            "type": "string",
+            "nullable": true
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "studentName": {
+            "type": "string",
+            "nullable": true
+          },
+          "subjectId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "subjectName": {
+            "type": "string",
+            "nullable": true
+          },
+          "startTime": {
+            "type": "string",
+            "description": "Время начала урока в формате ISO 8601 (например, 2023-05-25T14:30:00Z)",
+            "format": "date-time",
+            "example": "2025-06-04T16:21:59Z"
+          },
+          "endTime": {
+            "type": "string",
+            "description": "Время окончания урока в формате ISO 8601 (например, 2023-05-25T16:00:00Z)",
+            "format": "date-time",
+            "example": "2025-06-04T18:21:59Z"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "conferenceLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "whiteboardLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttachmentDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LessonStatus": {
+        "enum": [
+          "Scheduled",
+          "InProgress",
+          "Completed",
+          "Cancelled"
+        ],
+        "type": "string"
+      },
+      "LoginRequest": {
+        "required": [
+          "login",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "login": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "password": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreparationProgramDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReviewDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lessonId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "teacherId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "teacherName": {
+            "type": "string",
+            "nullable": true
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "studentName": {
+            "type": "string",
+            "nullable": true
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Дата создания отзыва",
+            "format": "date",
+            "example": "2025-05-28"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StudentProfileDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StudentRegisterRequest": {
+        "required": [
+          "birthDate",
+          "confirmPassword",
+          "contactInfo",
+          "firstName",
+          "gender",
+          "lastName",
+          "login",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "login": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "password": {
+            "maxLength": 100,
+            "minLength": 6,
+            "type": "string"
+          },
+          "confirmPassword": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "firstName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "Дата рождения в формате YYYY-MM-DD",
+            "format": "date",
+            "example": "2025-05-28"
+          },
+          "gender": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "contactInfo": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "photoBase64": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StudentRequestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "teacherId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "studentName": {
+            "type": "string",
+            "nullable": true
+          },
+          "teacherName": {
+            "type": "string",
+            "nullable": true
+          },
+          "requestDate": {
+            "type": "string",
+            "description": "Дата запроса в формате YYYY-MM-DD",
+            "format": "date",
+            "example": "2025-05-28"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StudentStatisticsDto": {
+        "type": "object",
+        "properties": {
+          "totalLessons": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "completedLessons": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "upcomingLessons": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "teachersCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lessonsBySubject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "totalLessonHours": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubjectDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TeacherProfileDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "education": {
+            "type": "string",
+            "nullable": true
+          },
+          "experienceYears": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hourlyRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "rating": {
+            "type": "number",
+            "format": "double"
+          },
+          "reviewsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "preparationPrograms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreparationProgramDto"
+            },
+            "nullable": true
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectDto"
+            },
+            "nullable": true
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TeacherRegisterRequest": {
+        "required": [
+          "birthDate",
+          "confirmPassword",
+          "contactInfo",
+          "education",
+          "experienceYears",
+          "firstName",
+          "gender",
+          "hourlyRate",
+          "lastName",
+          "login",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "login": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "password": {
+            "maxLength": 100,
+            "minLength": 6,
+            "type": "string"
+          },
+          "confirmPassword": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "firstName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "Дата рождения в формате YYYY-MM-DD",
+            "format": "date",
+            "example": "2025-05-28"
+          },
+          "gender": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "contactInfo": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "photoBase64": {
+            "type": "string",
+            "nullable": true
+          },
+          "education": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "preparationProgramIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "experienceYears": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hourlyRate": {
+            "maximum": 10000,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "subjectIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TeacherStatisticsDto": {
+        "type": "object",
+        "properties": {
+          "totalStudents": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalLessons": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "completedLessons": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "upcomingLessons": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rating": {
+            "type": "number",
+            "format": "double"
+          },
+          "reviewsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lessonsBySubject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "ratingDistribution": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateStudentProfileRequest": {
+        "required": [
+          "birthDate",
+          "contactInfo",
+          "firstName",
+          "gender",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "Дата рождения в формате YYYY-MM-DD",
+            "format": "date",
+            "example": "2025-05-28"
+          },
+          "gender": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "contactInfo": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "photoBase64": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateTeacherProfileRequest": {
+        "required": [
+          "birthDate",
+          "contactInfo",
+          "education",
+          "experienceYears",
+          "firstName",
+          "gender",
+          "hourlyRate",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "Дата рождения в формате YYYY-MM-DD",
+            "format": "date",
+            "example": "2025-05-28"
+          },
+          "gender": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "contactInfo": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "education": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "experienceYears": {
+            "maximum": 50,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "hourlyRate": {
+            "maximum": 10000,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "subjectIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "preparationProgramIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "photoBase64": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UploadAttachmentRequest": {
+        "required": [
+          "base64Content",
+          "fileName",
+          "fileType"
+        ],
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "fileType": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "base64Content": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Содержимое файла в формате Base64 (временно, будет заменено на загрузку через multipart/form-data)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "Дата рождения в формате YYYY-MM-DD",
+            "format": "date",
+            "example": "2025-05-28"
+          },
+          "gender": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactInfo": {
+            "type": "string",
+            "nullable": true
+          },
+          "isTeacher": {
+            "type": "boolean"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "photoBase64": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Аутентификация и авторизация пользователей"
+    },
+    {
+      "name": "Dictionary",
+      "description": "Справочники системы"
+    },
+    {
+      "name": "Profile",
+      "description": "API для доступа к профилям"
+    },
+    {
+      "name": "Review",
+      "description": "API для работы с отзывами"
+    },
+    {
+      "name": "Teacher",
+      "description": "API для репетиторов"
+    },
+    {
+      "name": "Student",
+      "description": "API для студентов"
+    },
+    {
+      "name": "Admin",
+      "description": "API для администраторов"
+    }
+  ]
+}
